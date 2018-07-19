@@ -50,6 +50,8 @@ RUN curl -L https://www.getchef.com/chef/install.sh | bash \
        --json-attributes /var/chef/solo.json \
     && rpm -qa *chef* | xargs rpm -e \
     && rpm --rebuilddb \
+    && sed -i '/exec \.\/bin\/nexus run/d' /opt/sonatype/start-nexus-repository-manager.sh \
+    && ( echo "rm -f \${NEXUS_DATA}/lock" && echo "exec ./bin/nexus run" ) >>/opt/sonatype/start-nexus-repository-manager.sh \
     && rm -rf /etc/chef \
     && rm -rf /opt/chefdk \
     && rm -rf /var/cache/yum \
